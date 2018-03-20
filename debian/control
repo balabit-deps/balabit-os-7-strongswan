@@ -1,0 +1,438 @@
+Source: strongswan
+Section: net
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: strongSwan Maintainers <pkg-swan-devel@lists.alioth.debian.org>
+Uploaders: Rene Mayrhofer <rmayr@debian.org>,
+           Yves-Alexis Perez <corsac@debian.org>
+Standards-Version: 4.1.2
+Vcs-Browser: https://salsa.debian.org/debian/strongswan
+Vcs-Git: https://salsa.debian.org/debian/strongswan.git
+Build-Depends: bison,
+               bzip2,
+               debhelper (>= 9.20160709),
+               dh-apparmor,
+               dh-autoreconf,
+               dpkg-dev (>= 1.16.2),
+               flex,
+               gperf,
+               iptables-dev [linux-any],
+               libcap-dev [linux-any],
+               libcurl4-openssl-dev | libcurl3-dev | libcurl2-dev,
+               libgcrypt20-dev | libgcrypt11-dev,
+               libgmp3-dev,
+               libjson-c-dev,
+               libkrb5-dev,
+               libldap2-dev,
+               libldns-dev,
+               libmysqlclient-dev,
+               libnm-dev,
+               libpam0g-dev,
+               libpcsclite-dev,
+               libsoup2.4-dev,
+               libsqlite3-dev,
+               libssl-dev (>= 0.9.8),
+               libsystemd-dev [linux-any],
+               libtool,
+               libtspi-dev,
+               libunbound-dev,
+               libxml2-dev,
+               network-manager-dev (>= 0.7) [linux-any],
+               pkg-config,
+               po-debconf,
+               systemd [linux-any],
+               tzdata
+Homepage: http://www.strongswan.org
+XS-Testsuite: autopkgtest
+
+Package: strongswan
+Architecture: all
+Depends: strongswan-charon, strongswan-starter, ${misc:Depends}
+Description: IPsec VPN solution metapackage
+ The strongSwan VPN suite uses the native IPsec stack in the standard Linux
+ kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This metapackage installs the packages required to maintain IKEv1 and IKEv2
+ connections via ipsec.conf or ipsec.secrets.
+
+Package: libstrongswan
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Breaks: strongswan-starter (<< 5.3.5-2), libstrongswan-extra-plugins (<= 5.6.1-2ubuntu1~)
+Replaces: strongswan-starter (<< 5.3.5-2), libstrongswan-extra-plugins (<= 5.6.1-2ubuntu1~)
+Recommends: libstrongswan-standard-plugins
+Suggests: libstrongswan-extra-plugins
+Description: strongSwan utility and crypto library
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides the underlying libraries of charon and other strongSwan
+ components. It is built in a modular way and is extendable through various
+ plugins.
+ .
+ Some default (as specified by the strongSwan projet) plugins are included.
+ For libstrongswan (cryptographic backends, URI fetchers and database layers):
+  - aes (AES-128/192/256 cipher software implementation)
+  - constraints (X.509 certificate advanced constraint checking)
+  - dnskey (Parse RFC 4034 public keys)
+  - fips-prf (PRF specified by FIPS, used by EAP-SIM/AKA algorithms)
+  - gmp (RSA/DH crypto backend based on libgmp)
+  - hmac (HMAC wrapper using various hashers)
+  - md4 (MD4 hasher software implementation)
+  - md5 (MD5 hasher software implementation)
+  - mgf1 (Mask Generation Functions based on the SHA-1, SHA-256 and SHA-512)
+  - nonce (Default nonce generation plugin)
+  - pem (PEM encoding/decoding routines)
+  - pgp (PGP encoding/decoding routines)
+  - pkcs1 (PKCS#1 encoding/decoding routines)
+  - pkcs8 (PKCS#8 decoding routines)
+  - pkcs12 (PKCS#12 decoding routines)
+  - pubkey (Wrapper to handle raw public keys as trusted certificates)
+  - random (RNG reading from /dev/[u]random)
+  - rc2 (RC2 cipher software implementation)
+  - revocation (X.509 CRL/OCSP revocation checking)
+  - sha1 (SHA1 hasher software implementation)
+  - sha2 (SHA256/SHA384/SHA512 hasher software implementation)
+  - sshkey (SSH key decoding routines)
+  - x509 (Advanced X.509 plugin for parsing/generating X.509 certificates/CRLs
+    and OCSP messages)
+  - xcbc (XCBC wrapper using various ciphers)
+  - attr (Provides IKE attributes configured in strongswan.conf)
+  - kernel-netlink [linux] (IPsec/Networking kernel interface using Linux
+    Netlink)
+  - kernel-pfkey [kfreebsd] (IPsec kernel interface using PF_KEY)
+  - kernel-pfroute [kfreebsd] (Networking kernel interface using PF_ROUTE)
+  - resolve (Writes name servers received via IKE to a resolv.conf file or
+    installs them via resolvconf(8))
+  .
+  Also included is the libtpmtss library adding support for TPM plugin
+  (https://wiki.strongswan.org/projects/strongswan/wiki/TpmPlugin)
+
+Package: libstrongswan-standard-plugins
+Architecture: any
+Depends: libstrongswan (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Breaks: libstrongswan (<= 5.1.1-1), strongswan-ike (<= 5.1.1-1)
+Replaces: libstrongswan (<= 5.1.1-1), strongswan-ike (<= 5.1.1-1)
+Description: strongSwan utility and crypto library (standard plugins)
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides some common plugins for the strongSwan utility and
+ cryptograhic library.
+ .
+ Included plugins are:
+  - agent (RSA/ECDSA private key backend connecting to SSH-Agent)
+  - gcm (GCM cipher mode wrapper)
+  - openssl (Crypto backend based on OpenSSL, provides
+    RSA/ECDSA/DH/ECDH/ciphers/hashers/HMAC/X.509/CRL/RNG)
+
+Package: libstrongswan-extra-plugins
+Architecture: any
+Depends: libstrongswan (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Breaks: libstrongswan (<= 5.6.1-2ubuntu1~), strongswan-ike (<= 5.1.1-1), libcharon-extra-plugins (<= 5.5.3-1)
+Replaces: libstrongswan (<= 5.6.1-2ubuntu1~), strongswan-ike (<= 5.1.1-1), libcharon-extra-plugins (<= 5.5.3-1)
+Description: strongSwan utility and crypto library (extra plugins)
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides extra plugins for the strongSwan utility and
+ cryptographic library.
+ .
+ Included plugins are:
+  - acert (Support of X.509 attribute certificates (since 5.1.3))
+  - af-alg [linux] (AF_ALG Linux crypto API interface, provides
+    ciphers/hashers/hmac/xcbc)
+  - attr-sql (provide IKE attributes read from a database to peers)
+  - bliss (Bimodal Lattice Signature Scheme (BLISS) post-quantum computer
+    signature scheme)
+  - ccm (CCM cipher mode wrapper)
+  - chapoly (ChaCha20/Poly1305 AEAD implementation)
+  - cmac (CMAC cipher mode wrapper)
+  - ctr (CTR cipher mode wrapper)
+  - coupling (Permanent peer certificate coupling)
+  - curl (libcurl based HTTP/FTP fetcher)
+  - curve25519 (support for Diffie-Hellman group 31 using Curve25519 and
+    support for the Ed25519 digital signature algorithm for IKEv2)
+  - dnscert (authentication via CERT RRs protected by DNSSEC)
+  - gcrypt (Crypto backend based on libgcrypt, provides
+    RSA/DH/ciphers/hashers/rng)
+  - ipseckey (authentication via IPSECKEY RRs protected by DNSSEC)
+  - ldap (LDAP fetching plugin based on libldap)
+  - load-tester (perform IKE load tests against self or gateway)
+  - mysql (database backend)
+  - ntru (key exchanged based on post-quantum computer NTRU)
+  - nttfft (Number Theoretic Transform via the FFT algorithm)
+  - padlock (VIA padlock crypto backend, provides AES128/SHA1)
+  - pkcs11 (PKCS#11 smartcard backend)
+  - radattr (inject and process custom RADIUS attributes as IKEv2 client)
+  - sql (SQL configuration and creds engine)
+  - sqlite (SQLite database backend)
+  - soup (libsoup based HTTP fetcher)
+  - tpmtss (TPM 1.2 and TPM 2.0 Trusted Platform Modules)
+  - rdrand (High quality / high performance random source using the Intel
+    rdrand instruction found on Ivy Bridge processors)
+  - test-vectors (Set of test vectors for various algorithms)
+  - unbound (DNSSEC enabled resolver using libunbound)
+  - whitelist (peer verification against a whitelist)
+
+Package: libcharon-standard-plugins
+Architecture: any
+Depends: libstrongswan (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Breaks: libcharon-extra-plugins (<< 5.5.1-1ubuntu1~)
+Replaces: libcharon-extra-plugins (<< 5.5.1-1ubuntu1~)
+Description: strongSwan charon library (standard plugins)
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides standard plugins for the charon library:
+  - eap-mschapv2 (EAP-MSCHAPv2 protocol handler using passwords/NT hashes)
+  - xauth-generic (Generic XAuth backend that provides passwords from
+    ipsec.secrets and other credential sets)
+
+Package: libcharon-extra-plugins
+Architecture: any
+Depends: libstrongswan (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Breaks: libstrongswan (<= 5.1.1-1), strongswan-ike (<= 5.1.1-1)
+Replaces: libstrongswan (<= 5.1.1-1), strongswan-ike (<= 5.1.1-1)
+Description: strongSwan charon library (extra plugins)
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides extra plugins for the charon library:
+  - addrblock (Narrow traffic selectors to RFC 3779 address blocks in X.509
+    certificates)
+  - dhcp (Forwarding of DHCP requests for virtual IPs to DHCP server)
+  - certexpire (Export expiration dates of used certificates)
+  - eap-aka (Generic EAP-AKA protocol handler using different backends)
+  - eap-gtc (EAP-GTC protocol handler authenticating with XAuth backends)
+  - eap-identity (EAP-Identity identity exchange algorithm, to use with other
+    EAP protocols)
+  - eap-md5 (EAP-MD5 protocol handler using passwords)
+  - eap-radius (EAP server proxy plugin forwarding EAP conversations to a
+    RADIUS server)
+  - eap-tls (EAP-TLS protocol handler, to authenticate with certificates in
+    EAP)
+  - eap-tnc (EAP-TNC protocol handler, Trusted Network Connect in a TLS tunnel)
+  - eap-ttls (EAP-TTLS protocol handler, wraps other EAP methods securely)
+  - error-notify (Notification about errors via UNIX socket)
+  - farp (fake ARP responses for requests to virtual IP address)
+  - ha (High-Availability clustering)
+  - kernel-libipsec (Userspace IPsec Backend with TUN devices)
+  - led (Let Linux LED subsystem LEDs blink on IKE activity)
+  - lookip (Virtual IP lookup facility using a UNIX socket)
+  - tnc (Trusted Network Connect)
+  - unity (Cisco Unity extensions for IKEv1)
+  - xauth-eap (XAuth backend that uses EAP methods to verify passwords)
+  - xauth-pam (XAuth backend that uses PAM modules to verify passwords)
+  - eap-aka-3gpp2 (EAP-AKA backend implementing standard 3GPP2 algorithm in software)
+  - eap-dynamic (EAP proxy plugin that dynamically selects an EAP method requested/supported by the client (since 5.0.1))
+  - eap-peap (EAP-PEAP protocol handler, wraps other EAP methods securely)
+  - eap-sim (Generic EAP-SIM protocol handler using different backends)
+  - eap-sim-file (EAP-SIM backend reading triplets from a file)
+  - eap-sim-pcsc (EAP-SIM backend based on a PC/SC smartcard reader)
+  - eap-simaka-pseudonym (EAP-SIM/AKA in-memory pseudonym identity database)
+  - eap-simaka-reauth (EAP-SIM/AKA in-memory reauthentication identity database)
+  - eap-simaka-sql (EAP-SIM/AKA backend reading triplets/quintuplets from a SQL database)
+  - xauth-noauth (XAuth backend that does not do any authentication (since 5.0.3))
+
+Package: strongswan-starter
+Architecture: any
+Depends: adduser,
+         libstrongswan (= ${binary:Version}),
+         lsb-base (>= 3.0-6),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: strongswan-charon
+Conflicts: openswan
+Description: strongSwan daemon starter and configuration file parser
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ The starter and the associated "ipsec" script control the charon daemon from
+ the command line. It parses ipsec.conf and loads the configurations to the
+ daemon.
+
+Package: strongswan-libcharon
+Architecture: any
+Depends: libstrongswan (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Breaks: strongswan-starter (<= 5.6.2-1ubuntu2~)
+Replaces: strongswan-starter (<= 5.6.2-1ubuntu2~)
+Recommends: libcharon-standard-plugins
+Suggests: libcharon-extra-plugins
+Description: strongSwan charon library
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package contains the charon library, used by IKE client like
+ strongswan-charon, strongswan-charon-cmd or strongswan-nm as well as standard
+ plugins:
+   - socket-default
+   - counters
+   - bypass-lan (disabled by default)
+
+Package: strongswan-charon
+Architecture: any
+Pre-Depends: debconf | debconf-2.0
+Depends: iproute2 [linux-any] | iproute [linux-any],
+         libstrongswan (= ${binary:Version}),
+         strongswan-starter,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Provides: ike-server
+Description: strongSwan Internet Key Exchange daemon
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ charon is an IPsec IKEv2 daemon which can act as an initiator or a responder.
+ It is written from scratch using a fully multi-threaded design and a modular
+ architecture. Various plugins can provide additional functionality.
+
+Package: strongswan-nm
+Architecture: linux-any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: network-manager-strongswan
+Replaces: network-manager-strongswan (<= 1.4.1-1~)
+Description: strongSwan plugin to interact with NetworkManager
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This plugin provides an interface which allows NetworkManager to configure
+ and control the IKEv2 daemon directly through D-Bus. It is designed to work
+ in conjunction with the network-manager-strongswan package, providing
+ a simple graphical frontend to configure IPsec based VPNs.
+
+Package: strongswan-tnc-ifmap
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libstrongswan (= ${binary:Version})
+Description: strongSwan plugin for Trusted Network Connect's (TNC) IF-MAP client
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides Trusted Network Connect's (TNC) IF-MAP 2.0 client.
+
+Package: strongswan-tnc-base
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libstrongswan (= ${binary:Version})
+Suggests: strongswan-tnc-ifmap, strongswan-tnc-pdp
+Description: strongSwan Trusted Network Connect's (TNC) - base files
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides the base files for strongSwan's Trusted Network
+ Connect's (TNC) functionality.
+ .
+ strongSwan's IMC/IMV dynamic libraries can be used by any third party TNC
+ client/server implementation possessing a standard IF-IMC/IMV interface.
+
+Package: strongswan-tnc-client
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+  libstrongswan (= ${binary:Version}), strongswan-tnc-base (= ${binary:Version})
+Suggests: libcharon-extra-plugins
+Description: strongSwan Trusted Network Connect's (TNC) - client files
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides the client functionality for strongSwan's Trusted Network
+ Connect's (TNC) features.
+ .
+ It includes the OS, scanner, test, SWID, and attestation IMCs.
+
+Package: strongswan-tnc-server
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+  libstrongswan (= ${binary:Version}),
+  strongswan-tnc-base (= ${binary:Version}),
+  libstrongswan-extra-plugins (= ${binary:Version})
+Description: strongSwan Trusted Network Connect's (TNC) - server files
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides the server functionality for strongSwan's Trusted Network
+ Connect's (TNC) features.
+
+Package: strongswan-tnc-pdp
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+  libstrongswan (= ${binary:Version}),
+  strongswan-tnc-server (= ${binary:Version})
+Description: strongSwan plugin for Trusted Network Connect's (TNC) PDP
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides Trusted Network Connect's (TNC) Policy Decision Point
+ (PDP) with RADIUS server interface.
+
+Package: charon-cmd
+Architecture: any
+Depends: libstrongswan (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: standalone IPsec client
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package contains the charon-cmd command, which can be used as a client to
+ connect to a remote IKE daemon.
+
+Package: strongswan-pki
+Architecture: any
+Depends: libstrongswan (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Breaks: strongswan-starter (<< 5.3.5-2)
+Replaces: strongswan-starter (<< 5.3.5-2)
+Description: strongSwan IPsec client, pki command
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package contains the pki tool which allows on to run a simple public key
+ infrastructure.
+
+Package: strongswan-scepclient
+Architecture: any
+Depends: libstrongswan (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Breaks: strongswan-starter (<< 5.3.5-2)
+Replaces: strongswan-starter (<< 5.3.5-2)
+Description: strongSwan IPsec client, SCEP client
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package contains the SCEP client, an implementation of the Cisco System's
+ Simple Certificate Enrollment Protocol (SCEP).
+
+Package: strongswan-swanctl
+Architecture: any
+Depends: libstrongswan (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: strongSwan IPsec client, swanctl command
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package contains the swanctl interface, used to configure a running
+ charon daemon
+
+Package: charon-systemd
+Architecture: linux-any
+Depends: libstrongswan (= ${binary:Version}),
+         strongswan-swanctl,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: strongSwan IPsec client, systemd support
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package contains the charon-systemd files.

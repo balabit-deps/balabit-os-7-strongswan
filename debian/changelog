@@ -1,3 +1,24 @@
+strongswan (5.6.2-1ubuntu2.2) bionic-security; urgency=medium
+
+  * SECURITY UPDATE: Insufficient input validation in gmp plugin
+    - debian/patches/strongswan-5.6.1-5.6.3_gmp-pkcs1-verify.patch: don't
+      parse PKCS1 v1.5 RSA signatures to verify them in
+      src/libstrongswan/plugins/gmp/gmp_rsa_private_key.c,
+      src/libstrongswan/plugins/gmp/gmp_rsa_public_key.c.
+    - CVE-2018-16151
+    - CVE-2018-16152
+  * SECURITY UPDATE: remote denial of service
+    - debian/patches/strongswan-5.5.0-5.6.2_skeyseed_init.patch: properly
+      initialize variable in src/libcharon/sa/ikev2/keymat_v2.c.
+    - CVE-2018-10811
+  * SECURITY UPDATE: DoS in stroke plugin
+    - debian/patches/strongswan-5.1.2-5.6.2_stroke_msg_len.patch: ensure a
+      minimum message length in
+      src/libcharon/plugins/stroke/stroke_socket.c.
+    - CVE-2018-5388
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 18 Sep 2018 11:03:06 +0200
+
 strongswan (5.6.2-1ubuntu2) bionic; urgency=medium
 
   * d/control: fix dependencies of strongswan-libcharon due to the move

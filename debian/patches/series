@@ -6,3 +6,4 @@ dont-load-kernel-libipsec-plugin-by-default.patch
 strongswan-5.6.1-5.6.3_gmp-pkcs1-verify.patch
 strongswan-5.5.0-5.6.2_skeyseed_init.patch
 strongswan-5.1.2-5.6.2_stroke_msg_len.patch
+strongswan-4.4.0-5.7.0_gmp-pkcs1-overflow.patch

@@ -71,6 +71,10 @@
 
   /var/lib/strongswan/*     r,
 
+  # for using the ha plugin (LP: #1773956)
+  @{PROC}/@{pid}/net/ipt_CLUSTERIP/ r,
+  @{PROC}/@{pid}/net/ipt_CLUSTERIP/* rw,
+
   # Site-specific additions and overrides. See local/README for details.
   #include <local/usr.lib.ipsec.charon>
 }

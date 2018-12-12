@@ -1,3 +1,13 @@
+strongswan (5.6.2-1ubuntu2.4) bionic; urgency=medium
+
+  * fix stroke and lookip execution in containers (LP: #1780534). Binaries
+    need to be able to read map and execute themselves
+    - d/usr.lib.ipsec.lookip: add rmix to own binary
+    - d/usr.lib.ipsec.stroke: add rmix to own binary
+  * d/usr.lib.ipsec.charon: allow CLUSTERIP for ha plugin (LP: #1773956)
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 12 Dec 2018 15:52:43 +0100
+
 strongswan (5.6.2-1ubuntu2.3) bionic-security; urgency=medium
 
   * SECURITY UPDATE: Insufficient input validation in gmp plugin

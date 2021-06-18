@@ -248,9 +248,9 @@ Architecture: any
 Depends: adduser,
          libstrongswan (= ${binary:Version}),
          lsb-base (>= 3.0-6),
+         strongswan-charon,
          ${misc:Depends},
          ${shlibs:Depends}
-Recommends: strongswan-charon
 Conflicts: openswan
 Description: strongSwan daemon starter and configuration file parser
  The strongSwan VPN suite uses the native IPsec stack in the standard
@@ -285,9 +285,9 @@ Architecture: any
 Pre-Depends: debconf | debconf-2.0
 Depends: iproute2 [linux-any] | iproute [linux-any],
          libstrongswan (= ${binary:Version}),
-         strongswan-starter,
          ${misc:Depends},
          ${shlibs:Depends}
+Recommends: strongswan-starter,
 Provides: ike-server
 Description: strongSwan Internet Key Exchange daemon
  The strongSwan VPN suite uses the native IPsec stack in the standard

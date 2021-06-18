@@ -1,3 +1,11 @@
+strongswan (5.6.2-1ubuntu2.6) bionic; urgency=medium
+
+  * d/control: change dependency relationship between strongswan-charon and
+    strongswan-starter so that the charon service is started with the apparmor
+    profile applied (LP: #1932197)
+
+ -- Andreas Hasenack <andreas@canonical.com>  Fri, 18 Jun 2021 19:58:12 +0000
+
 strongswan (5.6.2-1ubuntu2.5) bionic; urgency=medium
 
   * d/p/lp-1772705-charon-nm-Fix-building-list-of-DNS-MDNS-servers-with.patch:
